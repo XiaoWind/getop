@@ -35,9 +35,12 @@ def main():
             dd = urllib2.urlopen(link)
             with open("torrent/"+i.group(2)+".torrent","wb") as f:
                 f.write(dd.read())
-            #进入页面，种子下载完成
-            with open('ep.txt','w') as f:
-                f.write(i.group(2))
+            #种子下载完成，只有当前集数较新时才写入ep.txt
+            with open('ep.txt','r') as f:
+                tempep = int(f.read())
+            if int(i.group(2)) > tempep:
+                with open('ep.txt','w') as f:
+                    f.write(i.group(2))
 
 if __name__ == '__main__':
     main()
