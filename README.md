@@ -5,4 +5,4 @@ export EDITOR = vim
 
 crontab -e
 
-``* * * * 0 python /getop.py``
+``* * * * 0 cd /home/dir && python getop.py >/dev/null 2>&1``
