@@ -2,8 +2,18 @@
 # -*- coding: utf-8 -*-
 import urllib2
 import re
+import os
 
 def main():
+    #检查ep文件是否存在，检查torrent文件夹是否存在
+    #不存在就创建
+    if not os.path.exists('ep.txt'):
+        with open('ep.txt','w') as f:
+            f.write('0')
+
+    if not os.path.exists('torrent'):
+        os.makedirs('torrent')
+
     #读取已下载过种子的集数保存到ep
     with open('ep.txt','r') as f:
         ep = int(f.read())
