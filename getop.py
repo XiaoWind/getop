@@ -26,9 +26,9 @@ def main():
     html = unicode(html, "gbk").encode("utf8")
     #print html
 
-    links = re.finditer(r'<a href="(.*?)".*第(.*)话.*FINAL',html)
+    links = re.finditer(r'<a href="(.*?)".*第(.*)话.*FINAL(.*)>',html)
     for i in links:
-        if int(i.group(2)) > ep:
+        if "V2" in i.group(3) or int(i.group(2)) > ep:
             #link[i.group(2)] = i.group(1)
             url = "http://bbs.opfans.org/" + i.group(1)
             url = url.replace('amp;','')
