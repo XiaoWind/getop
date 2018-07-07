@@ -43,7 +43,10 @@ def main():
             link = link.replace('amp;','')
 
             dd = urllib2.urlopen(link)
-            with open("torrent/"+i.group(2)+".torrent","wb") as f:
+            isv2 = ""
+            if "V2" in i.group(3):
+                isv2 = "v2"
+            with open("torrent/"+i.group(2)+isv2+".torrent","wb") as f:
                 f.write(dd.read())
             #种子下载完成，只有当前集数较新时才写入ep.txt
             with open('ep.txt','r') as f:
