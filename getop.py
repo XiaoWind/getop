@@ -18,32 +18,42 @@ def main():
     with open('ep.txt','r') as f:
         ep = int(f.read())
 
-    url = "http://bbs.opfans.org/forum.php?mod=forumdisplay&fid=37"
+    url = "http://www.opfans.org/" #?cat=1,FINAL分类
     request = urllib2.Request(url)
     response = urllib2.urlopen(request)
     html = response.read()
-
-    html = unicode(html, "gbk").encode("utf8")
     #print html
 
-    links = re.finditer(r'<a href="(.*?)".*第(.*)话.*FINAL(.*)>',html)
+    links = re.finditer(r'<a href="([^>]*?)"[^>]*第(.*?)话.*?FINAL(.*?)>',html)
     for i in links:
         if "V2" in i.group(3) or int(i.group(2)) > ep:
-            #link[i.group(2)] = i.group(1)
-            url = "http://bbs.opfans.org/" + i.group(1)
-            url = url.replace('amp;','')
+            url = i.group(1)
+            print url
 
             request = urllib2.Request(url)
             response = urllib2.urlopen(request)
             html = response.read()
-            html = unicode(html, "gbk").encode("utf8")
 
-            link = re.search(r'<a href="(.*?)".*torrent',html)
-            link = "http://bbs.opfans.org/" + link.group(1)
-            link = link.replace('amp;','')
+            link = re.search(r'<a href="(.*?)".*?下载地址',html)
+            link = link.group(1)
+            print link
+
+            #该link有防爬虫
+            headers = {'User-Agent':'Mozilla/4.0 (compatible; MSIE 5.5;Windows NT)','Referer':url}
+
+            request = urllib2.Request(link,'',headers)
+            response = urllib2.urlopen(request)
+            html = response.read()
+
+            link = re.search(r'href="(.*?torrent)"',html)
+            link = link.group(1)
+            print link
 
             dd = urllib2.urlopen(link)
-            with open("torrent/"+i.group(2)+".torrent","wb") as f:
+            isv2 = ""
+            if "V2" in i.group(3):
+                isv2 = "v2"
+            with open("torrent/"+i.group(2)+isv2+".torrent","wb") as f:
                 f.write(dd.read())
             #种子下载完成，只有当前集数较新时才写入ep.txt
             with open('ep.txt','r') as f:
