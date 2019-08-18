@@ -18,23 +18,12 @@ def main():
     with open('ep.txt','r') as f:
         ep = f.read()
 
-<<<<<<< HEAD
-    url = "http://www.opfans.org/" #?cat=1,FINAL分类
-=======
     url = "http://www.opfans.org/?cat=1" #?cat=1,FINAL分类
->>>>>>> ep to url
     request = urllib2.Request(url)
     response = urllib2.urlopen(request)
     html = response.read()
     #print html
 
-<<<<<<< HEAD
-    links = re.finditer(r'<a href="([^>]*?)"[^>]*第(.*?)话.*?FINAL(.*?)>',html)
-    for i in links:
-        if "V2" in i.group(3) or int(i.group(2)) > ep:
-            url = i.group(1)
-            print url
-=======
     links = re.finditer(r'<a href="([^>]*?)"[^>]*第(.*?话).*?FINAL(.*?)>',html)
 
     #将迭代器转成list
@@ -44,32 +33,14 @@ def main():
         if i.group(1) not in ep:
             url = i.group(1)
             #print url
->>>>>>> ep to url
 
             request = urllib2.Request(url)
             response = urllib2.urlopen(request)
             html = response.read()
 
-<<<<<<< HEAD
-            link = re.search(r'<a href="(.*?)".*?下载地址',html)
-            link = link.group(1)
-            print link
-
-            #该link有防爬虫
-            headers = {'User-Agent':'Mozilla/4.0 (compatible; MSIE 5.5;Windows NT)','Referer':url}
-
-            request = urllib2.Request(link,'',headers)
-            response = urllib2.urlopen(request)
-            html = response.read()
-
-            link = re.search(r'href="(.*?torrent)"',html)
-            link = link.group(1)
-            print link
-=======
             link = re.search(r'href="(.*?torrent)"',html)
             link = link.group(1)
             #print link
->>>>>>> ep to url
 
             dd = urllib2.urlopen(link)
             with open("torrent/"+i.group(2)+url.partition("=")[2]+".torrent","wb") as f:
