@@ -37,14 +37,18 @@ def main():
             request = urllib2.Request(url)
             response = urllib2.urlopen(request)
             html = response.read()
+            #print html
 
-            link = re.search(r'href="(.*?torrent)"',html)
-            link = link.group(1)
-            #print link
+            links2 = re.finditer(r'href="(.*?torrent)">(.*?)</a>',html)
+            links2 =  list(links2)
 
-            dd = urllib2.urlopen(link)
-            with open("torrent/"+i.group(2)+url.partition("=")[2]+".torrent","wb") as f:
-                f.write(dd.read())
+            for j in links2:
+                link = j.group(1)
+                print link
+
+                dd = urllib2.urlopen(link)
+                with open("torrent/"+j.group(2)+"_"+url.partition("=")[2]+".torrent","wb") as f:
+                    f.write(dd.read())
 
     #种子下载完成，将所有已下种子的链接写入ep.txt
     tempep = ""

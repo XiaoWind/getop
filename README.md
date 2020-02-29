@@ -6,6 +6,8 @@
 ``0 3 * * * cd /home/dir/getop && python getop.py >/dev/null 2>&1``
 
 update:
+20200229:增加单页多个种子下载。
+
 20190818:将记录集数修改成记录链接地址。
 
 20190108:枫雪动漫改用WordPress，开启了防爬虫，增加headers模拟。
